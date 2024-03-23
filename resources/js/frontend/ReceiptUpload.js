@@ -52,7 +52,7 @@ const ReceiptUpload = ({ onReceiptUrlChange, endpoint }) => {
   return (
     <>
     <Box>
-      <Input type="file" onChange={handleImageChange} inputProps={{ accept: 'image/*,application/pdf' }} />
+      <Input type="file" onChange={handleImageChange} inputProps={{ accept: 'image/*' }} />
       <Input type="hidden" name="receipt_file" id="receipt_file" value={receiptFileUrl} />
       { isLoading ?  
         <CircularProgress /> : 
