@@ -74,6 +74,7 @@ class WC_Gateway_Dummy extends WC_Payment_Gateway {
 		
 		// Actions.
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_filter( 'woocommerce_payment_complete_order_status', array( $this, 'change_payment_complete_order_status' ), 10, 3 );
 	}
 
 	/**
@@ -164,6 +165,21 @@ class WC_Gateway_Dummy extends WC_Payment_Gateway {
         return true;
 	}
 	*/
+	
+	/**
+	 * Change payment complete order status to on-hold.
+	 *
+	 * @param  string         $status Current order status.
+	 * @param  int            $order_id Order ID.
+	 * @param  WC_Order|false $order Order object.
+	 * @return string
+	 */
+	public function change_payment_complete_order_status( $status, $order_id = 0, $order = false ) {
+		if ( $order && 'dummy' === $order->get_payment_method() ) {
+			$status = 'on-hold';
+		}
+		return $status;
+	}
 
 	/**
 	 * Process the payment and return the result.
@@ -181,7 +197,7 @@ class WC_Gateway_Dummy extends WC_Payment_Gateway {
 			$order = wc_get_order( $order_id );
 			$order->payment_complete();
 			
-			$order->update_status( 'on-hold' );
+			//$order->update_status( 'on-hold' );
             //$order_note = __( 'Pedido pagado vía YAPE/PLIN/Transferencia esperando validación', 'woocommerce-gateway-dummy' );
             //$order->add_order_note( $order_note, true );
 			
