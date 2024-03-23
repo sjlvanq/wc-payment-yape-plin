@@ -30,6 +30,7 @@
 		"@mui/icons-material": "^5.15.13",
 		"@mui/material": "^5.15.12",
 		"@mui/system": "^5.15.12",
-		"axios": "^1.6.7"
+		"axios": "^1.6.7",
+		"compressorjs": "^1.2.1"
 	}
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input, Button, Box, Typography } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Compressor from 'compressorjs';
 
 
 const ReceiptUpload = ({ onReceiptUrlChange, endpoint }) => {
@@ -19,11 +20,19 @@ const ReceiptUpload = ({ onReceiptUrlChange, endpoint }) => {
     setError(null);
   };
   
-  const handleUpload = async () => {      
+  const compressImage = () => {
+    new Compressor(selectedImage, {
+    quality: 0.8,
+    success: (compressedResult) => {
+      uploadImage(compressedResult)
+    },
+    });
+  };
+
+  const uploadImage = async (compressedResult) => {
     try {
-      // Crea un objeto FormData para enviar la imagen
       const formData = new FormData();
-      formData.append('file', selectedImage);
+      formData.append('file', compressedResult, selectedImage.name);
       setIsLoading(true);
       fetch(endpoint, {
         method: "POST",
@@ -48,6 +57,11 @@ const ReceiptUpload = ({ onReceiptUrlChange, endpoint }) => {
       setError("Error desconocido. Por favor, inténtelo nuevamente. Si el problema persiste y usted ya realizó la transferencia, seleccione 'Pago en efectivo'.");
     }
   };
+
+  const handleUpload = async () => {
+    compressImage();
+  };
+
   const isButtonEnabled = selectedImage !== null && !isLoaded && !isLoading;
   return (
     <>
