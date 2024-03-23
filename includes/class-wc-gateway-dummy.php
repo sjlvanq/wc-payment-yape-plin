@@ -53,18 +53,10 @@ class WC_Gateway_Dummy extends WC_Payment_Gateway {
 		$this->icon               = apply_filters( 'woocommerce_dummy_gateway_icon', '' );
 		$this->has_fields         = true;
 		$this->supports           = array(
-			'products',
-			'subscriptions',
-			'subscription_cancellation',
-			'subscription_suspension',
-			'subscription_reactivation',
-			'subscription_amount_changes',
-			'subscription_date_changes',
-			'multiple_subscriptions'
+			'products'
 		);
 
 		$this->method_title       = _x( 'Dummy Payment', 'Dummy payment method', 'woocommerce-gateway-dummy' );
-		$this->method_description = __( 'Allows dummy payments.', 'woocommerce-gateway-dummy' );
 
 		// Load the settings.
 		$this->init_form_fields();
@@ -82,7 +74,6 @@ class WC_Gateway_Dummy extends WC_Payment_Gateway {
 		
 		// Actions.
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		add_action( 'woocommerce_scheduled_subscription_payment_dummy', array( $this, 'process_subscription_payment' ), 10, 2 );
 	}
 
 	/**
@@ -205,24 +196,6 @@ class WC_Gateway_Dummy extends WC_Payment_Gateway {
 				'result' 	=> 'success',
 				'redirect'	=> $this->get_return_url( $order )
 			);
-		} else {
-			$message = __( 'Order payment failed. To make a successful payment using Dummy Payments, please review the gateway settings.', 'woocommerce-gateway-dummy' );
-			throw new Exception( $message );
-		}
-	}
-
-	/**
-	 * Process subscription payment.
-	 *
-	 * @param  float     $amount
-	 * @param  WC_Order  $order
-	 * @return void
-	 */
-	public function process_subscription_payment( $amount, $order ) {
-		$payment_result = $this->get_option( 'result' );
-
-		if ( 'success' === $payment_result ) {
-			$order->payment_complete();
 		} else {
 			$message = __( 'Order payment failed. To make a successful payment using Dummy Payments, please review the gateway settings.', 'woocommerce-gateway-dummy' );
 			throw new Exception( $message );
