@@ -4,6 +4,17 @@
 
 require_once('../../../../wp-load.php');
 
+// Verifica si el usuario está autenticado
+if ( ! is_user_logged_in() ) {
+    $response = array(
+        'success' => false,
+        'message' => 'Has perdido las credenciales de autenticación. Accede para continuar.',
+    );
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
+
 // Verifica si se ha enviado un archivo
 if (isset($_FILES['file'])) {
     $upload_dir = wp_upload_dir(); 
