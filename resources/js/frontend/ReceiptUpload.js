@@ -5,7 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Compressor from 'compressorjs';
 
 
-const ReceiptUpload = ({ onReceiptUrlChange, endpoint }) => {
+const ReceiptUpload = ({ onReceiptUrlChange, endpoint, nonce }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -33,6 +33,7 @@ const ReceiptUpload = ({ onReceiptUrlChange, endpoint }) => {
     try {
       const formData = new FormData();
       formData.append('file', compressedResult, selectedImage.name);
+      formData.append('nonce', nonce)
       setIsLoading(true);
       fetch(endpoint, {
         method: "POST",

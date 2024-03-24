@@ -85,6 +85,7 @@ final class WC_Gateway_Dummy_Blocks_Support extends AbstractPaymentMethodType {
 			'bankAcct_alias' 	=> $this->get_setting( 'bankAcct_alias' ),
 			'bankAcct_cci' 		=> $this->get_setting( 'bankAcct_cci' ),
 			'bankAcct_holder' 	=> $this->get_setting( 'bankAcct_holder' ),
+			'nonce' => wp_create_nonce('receipt_upload_nonce'),
 		];
 	}
 }

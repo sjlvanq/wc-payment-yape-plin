@@ -15,6 +15,16 @@ if ( ! is_user_logged_in() ) {
     exit;
 }
 
+if ( ! wp_verify_nonce(  $_REQUEST['nonce'], 'receipt_upload_nonce' ) ) {
+    $response = array(
+        'success' => false,
+        'message' => 'Tu solicitud no ha podido validarse.',
+    );
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
+
 // Verifica si se ha enviado un archivo
 if (isset($_FILES['file'])) {
     $upload_dir = wp_upload_dir(); 

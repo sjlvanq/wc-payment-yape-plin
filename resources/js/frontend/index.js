@@ -84,7 +84,7 @@ const Content = (props) => {
 			Después de realizar su pago por el monto correspondiente, <Typography component="span" sx={{fontWeight:'bold'}}>adjunte 
 			el comprobante o una captura de pantalla</Typography> a continuación:
 		</Typography>
-		<ReceiptUpload onReceiptUrlChange={handleReceiptUrlChange} endpoint={settings.endpoint} />
+		<ReceiptUpload onReceiptUrlChange={handleReceiptUrlChange} endpoint={settings.endpoint} nonce={settings.nonce} />
 		
 	  </Grid>
     </Grid>
