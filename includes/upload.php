@@ -32,6 +32,31 @@ if (isset($_FILES['file'])) {
     $target_url = $upload_dir['baseurl'] . '/comprobantes/';
     $target_file = $target_dir . time() . '_' . basename($_FILES['file']['name']); 
     
+    
+    $type_error = false;
+    switch( $_FILES['file']['type'] ) {
+		case 'image/gif':
+			if( !@imagecreatefromgif($_FILES['file']['tmp_name'] ) ) {$type_error=true;}break;
+		case 'image/jpeg':
+			if( !@imagecreatefromjpeg($_FILES['file']['tmp_name'] ) ) {$type_error=true;}break;
+		case 'image/png':
+			if( !@imagecreatefrompng($_FILES['file']['tmp_name'] ) ) {$type_error=true;}break;
+		default:
+			if( !@imagecreatefromwebp($_FILES['file']['tmp_name'] )  && !@imagecreatefromwbmp($_FILES['file']['name'] ) ) {
+				$type_error=true;
+			}
+	}
+	
+	if( $type_error ){
+        $response = array(
+            'success' => false,
+            'message' => 'No se reconoce un formato de imagen válido.',
+        );
+		header('Content-Type: application/json');
+        echo json_encode($response);
+        exit;
+	}
+    
     if (!file_exists($target_dir)) {
         if (!mkdir($target_dir, 0755, true)) {
             $response = array(
@@ -43,7 +68,7 @@ if (isset($_FILES['file'])) {
             exit;
         }
     }
-
+    
     if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
         $response = array(
             'success' => true,
@@ -55,6 +80,7 @@ if (isset($_FILES['file'])) {
             'message' => 'Error al subir el archivo. Por favor, inténtalo de nuevo.',
         );
     }
+    
 } else {
     $response = array(
         'success' => false,
