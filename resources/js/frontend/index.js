@@ -63,10 +63,11 @@ const Content = (props) => {
     <Grid container spacing={2}>
       <Grid item xs={12} container direction="column" alignItems="center">
         <Typography variant="body1" gutterBottom>
-          Escanee el código QR o envíe su transferencia a: 
+          Envíe su transferencia a: 
         </Typography>
 		<AccountTable settings={settings} />
       </Grid>
+	  {/*
       <Grid item xs={6} container direction="column" alignItems="center">
         <img src={yapeqr} height={200} width={200} alt="YAPE QR" />
         <Typography variant="h5" gutterBottom>
@@ -79,6 +80,7 @@ const Content = (props) => {
           PLIN
         </Typography>
       </Grid>
+	  */}
       <Grid item xs={12} container direction="column" alignItems="center">
 		<Typography variant="body1" gutterBottom>
 			Después de realizar su pago por el monto correspondiente, <Typography component="span" sx={{fontWeight:'bold'}}>adjunte 
