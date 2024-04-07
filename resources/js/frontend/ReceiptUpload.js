@@ -23,8 +23,18 @@ const ReceiptUpload = ({ onReceiptUrlChange, endpoint, nonce }) => {
   const compressImage = () => {
     new Compressor(selectedImage, {
     quality: 0.8,
-    success: (compressedResult) => {
+    success(compressedResult) {
       uploadImage(compressedResult)
+    },
+    error(err) {
+      var pre = "";
+      if(err.message.includes("must be an image")){
+        pre = "Formato de imagen no reconocido. ";
+      } else {
+        pre = "Error desconocido. ";
+      }
+      setError(pre + "Por favor, inténtelo nuevamente. Si el problema persiste y usted ya realizó la transferencia, seleccione 'Pago en efectivo'.");
+      console.log(err);
     },
     });
   };
@@ -60,6 +70,7 @@ const ReceiptUpload = ({ onReceiptUrlChange, endpoint, nonce }) => {
   };
 
   const handleUpload = async () => {
+    setError(null);
     compressImage();
   };
 
